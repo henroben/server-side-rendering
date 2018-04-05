@@ -2,7 +2,14 @@ import React from 'react';
 
 const Home = () => {
     return(
-        <div>Home Component</div>
+        <div>
+            <div>
+                Home Component Update!
+                <button onClick={() => {
+                    console.log('pressed');
+                }}>Press Me!</button>
+            </div>
+        </div>
     );
 };
 

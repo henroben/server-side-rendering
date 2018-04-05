@@ -1,18 +1,31 @@
-const express = require('express');
-const React = require('react');
-const renderToString = require('react-dom/server').renderToString;
+import express from 'express';
+import React from 'react';
+import { renderToString } from 'react-dom/server';
 
 // React components
-const Home = require('./client/components/Home').default;
+import Home from './client/components/Home';
 
 // Set up express
 const app = express();
+
+// Set up public directory
+app.use(express.static('public'));
 
 // Set up routes
 app.get('/', (req, res) => {
     const content = renderToString(<Home />);
 
-    res.send(content);
+    const html = `
+        <html>
+            <head></head>
+            <body>
+                <div>${content}</div>
+                <script src="bundle.js"></script>
+            </body>
+        </html>
+    `;
+
+    res.send(html);
 });
 
 // Start server
