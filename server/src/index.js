@@ -1,9 +1,6 @@
 import express from 'express';
-import React from 'react';
-import { renderToString } from 'react-dom/server';
-
-// React components
-import Home from './client/components/Home';
+import renderer from './helpers/renderer';
+import createStore from './helpers/createStore';
 
 // Set up express
 const app = express();
@@ -12,20 +9,10 @@ const app = express();
 app.use(express.static('public'));
 
 // Set up routes
-app.get('/', (req, res) => {
-    const content = renderToString(<Home />);
-
-    const html = `
-        <html>
-            <head></head>
-            <body>
-                <div>${content}</div>
-                <script src="bundle.js"></script>
-            </body>
-        </html>
-    `;
-
-    res.send(html);
+app.get('*', (req, res) => {
+    const store = createStore();
+    // TODO: initialise and load data into store
+    res.send(renderer(req, store));
 });
 
 // Start server
